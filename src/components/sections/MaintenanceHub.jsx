@@ -11,6 +11,25 @@ const MaintenanceHub = () => {
     "슬러지펌프 일상 점검 항목"
   ];
 
+  // List of pump maintenance manuals
+  const documents = [
+    {
+      name: "일축나사식 모노펌프 유지관리지침서",
+      desc: "모노펌프(전진공동) 운용 및 구조 가이드",
+      file: "/일축나사식_모노펌프_유지관리지침서.hwp",
+    },
+    {
+      name: "부스터펌프 유지관리 지침서",
+      desc: "개별 급수 가압 펌프 시스템 점검 가이드",
+      file: "/부스터펌프_유지관리지침서.hwp",
+    },
+    {
+      name: "편흡입볼류트펌프 유지관리지침서",
+      desc: "편흡입 원심 펌프 정비 및 조립 가이드",
+      file: "/편흡입볼류트펌프_유지관리지침서.hwp",
+    }
+  ];
+
   const handlePromptClick = (prompt) => {
     // Copy prompt text to clipboard to make it extremely easy to paste into NotebookLM
     navigator.clipboard.writeText(prompt);
@@ -56,30 +75,32 @@ const MaintenanceHub = () => {
               </div>
               <h3 className="text-2xl font-bold text-secondary mb-4">유지관리 지침서 다운로드</h3>
               <p className="text-slate-500 mb-8 leading-relaxed">
-                설비의 상세 구조, 분해 조립, 소모품 교체 주기 및 부품 규격이 포함된 한글(.hwp) 형식의 정식 유지관리 지침서입니다. 정기 점검 시 유용하게 활용해 보세요.
+                설비의 상세 구조, 분해 조립, 소모품 교체 주기 및 부품 규격이 포함된 한글(.hwp) 형식의 정식 유지관리 지침서입니다.
               </p>
 
-              {/* Document List Card */}
+              {/* Document List Cards */}
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-primary/20 hover:bg-slate-50/50 transition-all group">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs">
-                      HWP
+                {documents.map((doc, idx) => (
+                  <div key={idx} className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100 hover:border-primary/20 hover:bg-slate-50/50 transition-all group">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs shrink-0">
+                        HWP
+                      </div>
+                      <div>
+                        <p className="font-semibold text-sm text-slate-800 group-hover:text-primary transition-colors line-clamp-1">{doc.name}</p>
+                        <p className="text-[11px] text-slate-400 line-clamp-1">{doc.desc}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-semibold text-slate-800 group-hover:text-primary transition-colors">펌프 유지관리 지침서</p>
-                      <p className="text-xs text-slate-400">비에이텍 펌프 통합 운용 가이드</p>
-                    </div>
+                    <a 
+                      href={doc.file} 
+                      download
+                      className="p-2 rounded-lg bg-white hover:bg-primary hover:text-white border border-slate-200 text-slate-500 transition-all shadow-sm shrink-0"
+                      title="다운로드"
+                    >
+                      <Download size={16} />
+                    </a>
                   </div>
-                  <a 
-                    href="/펌프_유지관리_지침서.hwp" 
-                    download
-                    className="p-2 rounded-lg bg-white hover:bg-primary hover:text-white border border-slate-200 text-slate-500 transition-all shadow-sm"
-                    title="다운로드"
-                  >
-                    <Download size={18} />
-                  </a>
-                </div>
+                ))}
               </div>
             </div>
 
