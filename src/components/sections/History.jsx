@@ -2,10 +2,10 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 const historyData = [
-  { year: "2017.12.19", title: "강원도지사 표창", desc: "" },
-  { year: "2013.02.19", title: "상호 및 대표자 변경", desc: "상호 : (주)강원유체 -> 비에이택(주)" },
+  { year: "2010.11.01", title: "(주)강원유체 설립", desc: "" },
   { year: "2012.12.10", title: "벤처기업인증", desc: "중소기업청" },
-  { year: "2010.11.01", title: "(주)강원유체 설립", desc: "" }
+  { year: "2013.02.19", title: "상호 및 대표자 변경", desc: "상호 : (주)강원유체 -> 비에이택(주)" },
+  { year: "2017.12.19", title: "강원도지사 표창", desc: "" }
 ];
 
 const History = () => {
