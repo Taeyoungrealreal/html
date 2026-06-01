@@ -62,7 +62,16 @@ const Location = () => {
               </div>
             </div>
 
-            <div className="mt-8 space-y-4">
+            {/* 회사 전경 사진 추가 */}
+            <div className="mt-6 rounded-xl overflow-hidden shadow-sm border border-slate-100">
+              <img 
+                src="/company-photo.png" 
+                alt="비에이텍 회사 전경" 
+                className="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+
+            <div className="mt-6 space-y-4">
               <a 
                 href="https://maps.google.com/?q=강원특별자치도+춘천시+퇴계공단2길+64" 
                 target="_blank" 
