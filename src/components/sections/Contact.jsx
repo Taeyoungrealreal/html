@@ -80,15 +80,6 @@ const Contact = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="pt-6 border-t border-white/10 flex gap-4">
-                <a href="#" className="flex-1 bg-[#FEE500] hover:bg-[#F4DC00] text-[#391B1B] font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
-                  <span className="text-lg">💬</span> 카카오톡 상담
-                </a>
-                <a href="#" className="flex-1 bg-[#03C75A] hover:bg-[#02b351] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
-                  <span className="text-lg">N</span> 네이버 톡톡
-                </a>
-              </div>
             </div>
           </motion.div>
 
@@ -206,7 +197,7 @@ const Contact = () => {
                     className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary mr-3 cursor-pointer"
                   />
                   <label htmlFor="privacyConsent" className="text-sm text-slate-300 cursor-pointer flex-1">
-                    ☐ 개인정보 수집 및 이용에 동의합니다. (필수)
+                    개인정보 수집 및 이용에 동의합니다. (필수)
                   </label>
                 </div>
                 {errors.privacyConsent && <p className="text-red-400 text-xs">{errors.privacyConsent.message}</p>}
