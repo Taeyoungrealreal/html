@@ -136,7 +136,7 @@ const MaintenanceHub = () => {
               </h3>
               
               <p className="text-slate-300 mb-8 leading-relaxed max-w-xl">
-                두껍고 복잡한 매뉴얼을 전부 다 정독하지 마세요! 지침서 파일을 분석한 **구글 NotebookLM**에 자연어로 질문하면, 원하는 정비 절차나 조치 방법을 인공지능이 즉시 찾아 대답해 줍니다.
+                두껍고 복잡한 매뉴얼을 전부 다 정독하지 마세요! 지침서 파일을 분석한 구글 NotebookLM에 자연어로 질문하면, 원하는 정비 절차나 조치 방법을 인공지능이 즉시 찾아 대답해 줍니다.
               </p>
 
               {/* Recommended Prompts Area */}
