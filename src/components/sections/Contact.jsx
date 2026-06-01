@@ -70,15 +70,6 @@ const Contact = () => {
                     <p className="font-semibold text-lg">033-264-9243 / FAX : 033-251-5747</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                    <span className="font-bold text-primary">E</span>
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-400">이메일</p>
-                    <p className="font-semibold text-lg">info@batech.example.com</p>
-                  </div>
-                </div>
               </div>
             </div>
           </motion.div>
