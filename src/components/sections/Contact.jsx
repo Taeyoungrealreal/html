@@ -50,23 +50,44 @@ const Contact = () => {
             </p>
             
             <div className="space-y-6 text-slate-200">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                  <span className="font-bold text-primary">T</span>
+              <div className="flex items-center gap-3 bg-white/5 p-4 rounded-xl border border-white/10">
+                <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                  <span className="font-bold">⏱️</span>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-400">대표전화</p>
-                  <p className="font-semibold text-lg">033-264-9243 / FAX : 033-251-5747</p>
+                  <p className="text-sm text-slate-400">평균 응답 시간</p>
+                  <p className="font-semibold">영업일 기준 24시간 이내</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
-                  <span className="font-bold text-primary">E</span>
+
+              <div className="flex flex-col gap-4 mt-8">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                    <span className="font-bold text-primary">T</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-400">대표전화</p>
+                    <p className="font-semibold text-lg">033-264-9243 / FAX : 033-251-5747</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-sm text-slate-400">이메일</p>
-                  <p className="font-semibold text-lg">info@batech.example.com</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
+                    <span className="font-bold text-primary">E</span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-slate-400">이메일</p>
+                    <p className="font-semibold text-lg">info@batech.example.com</p>
+                  </div>
                 </div>
+              </div>
+
+              <div className="pt-6 border-t border-white/10 flex gap-4">
+                <a href="#" className="flex-1 bg-[#FEE500] hover:bg-[#F4DC00] text-[#391B1B] font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                  <span className="text-lg">💬</span> 카카오톡 상담
+                </a>
+                <a href="#" className="flex-1 bg-[#03C75A] hover:bg-[#02b351] text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors">
+                  <span className="text-lg">N</span> 네이버 톡톡
+                </a>
               </div>
             </div>
           </motion.div>
@@ -79,13 +100,34 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             {isSuccess ? (
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 p-10 rounded-2xl flex flex-col items-center justify-center h-full text-center">
-                <CheckCircle size={64} className="text-green-400 mb-4" />
-                <h3 className="text-2xl font-bold mb-2">문의가 접수되었습니다</h3>
-                <p className="text-slate-300">빠른 시일 내에 기재해주신 연락처로 회신드리겠습니다.</p>
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 p-10 rounded-2xl flex flex-col items-center justify-center h-full text-center animate-pulse">
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                >
+                  <CheckCircle size={80} className="text-green-400 mb-6 mx-auto" />
+                </motion.div>
+                <h3 className="text-2xl font-bold mb-3">문의가 접수되었습니다</h3>
+                <p className="text-slate-300 text-lg">영업일 기준 1~2일 내에 상세한 답변을 드리겠습니다.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit(onSubmit)} className="bg-white/5 backdrop-blur-sm border border-white/10 p-8 rounded-2xl shadow-xl space-y-5">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">문의 유형 *</label>
+                  <select
+                    {...register("inquiryType", { required: "문의 유형을 선택해주세요" })}
+                    className={`w-full bg-[#1e293b] border ${errors.inquiryType ? 'border-red-400' : 'border-white/20'} rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors`}
+                  >
+                    <option value="">유형을 선택해주세요</option>
+                    <option value="제품 도입 문의">제품 도입 문의</option>
+                    <option value="견적 요청">견적 요청</option>
+                    <option value="A/S 문의">A/S 문의</option>
+                    <option value="기타">기타</option>
+                  </select>
+                  {errors.inquiryType && <p className="text-red-400 text-xs mt-1">{errors.inquiryType.message}</p>}
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-sm font-medium text-slate-300 mb-1">회사명 *</label>
@@ -145,6 +187,29 @@ const Contact = () => {
                   ></textarea>
                   {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message.message}</p>}
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-1">첨부 파일 (선택)</label>
+                  <input 
+                    type="file"
+                    {...register("attachment")}
+                    className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-500 cursor-pointer text-sm"
+                  />
+                  <p className="text-xs text-slate-400 mt-1">도면, 사양서 등 참고 자료를 첨부하실 수 있습니다. (최대 10MB)</p>
+                </div>
+
+                <div className="flex items-center pt-2">
+                  <input 
+                    type="checkbox" 
+                    id="privacyConsent"
+                    {...register("privacyConsent", { required: "개인정보 수집 및 이용에 동의해야 합니다." })}
+                    className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary mr-3 cursor-pointer"
+                  />
+                  <label htmlFor="privacyConsent" className="text-sm text-slate-300 cursor-pointer flex-1">
+                    ☐ 개인정보 수집 및 이용에 동의합니다. (필수)
+                  </label>
+                </div>
+                {errors.privacyConsent && <p className="text-red-400 text-xs">{errors.privacyConsent.message}</p>}
 
                 <button 
                   type="submit" 
