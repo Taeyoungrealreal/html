@@ -55,6 +55,10 @@ const Location = () => {
                   강원특별자치도 춘천시 퇴계공단2길 64<br />
                   (퇴계제2농공단지내)
                 </p>
+                <div className="mt-4 text-slate-600 leading-relaxed text-sm space-y-1">
+                  <p><strong className="text-slate-700">버스:</strong> 퇴계공단 정류장 하차 후 도보 3분</p>
+                  <p><strong className="text-slate-700">자가용:</strong> 춘천IC &rarr; 퇴계공단길 방면 10분</p>
+                </div>
               </div>
             </div>
 
