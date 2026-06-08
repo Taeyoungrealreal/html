@@ -41,7 +41,7 @@ const Header = () => {
         </div>
 
         {/* Desktop Menu */}
-        <nav className="hidden md:flex space-x-8">
+        <nav className="hidden md:flex items-center space-x-8">
           {navItems.map((item) => (
             <a
               key={item.to}
@@ -51,6 +51,26 @@ const Header = () => {
               {item.name}
             </a>
           ))}
+
+          {/* 임직원 전용 버튼 */}
+          <a
+            id="employee-portal-btn"
+            href="Login.html"
+            className={`
+              flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold
+              border transition-all duration-200
+              ${isScrolled || !isHome
+                ? 'border-primary text-primary hover:bg-primary hover:text-white'
+                : 'border-white/60 text-white hover:bg-white hover:text-secondary'
+              }
+            `}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            임직원 전용
+          </a>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -72,6 +92,18 @@ const Header = () => {
               {item.name}
             </a>
           ))}
+          {/* 모바일 임직원 전용 버튼 */}
+          <a
+            href="Login.html"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-semibold text-center justify-center bg-primary text-white"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <rect x="3" y="11" width="18" height="11" rx="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            임직원 전용
+          </a>
         </div>
       )}
     </header>
