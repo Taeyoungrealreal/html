@@ -3,8 +3,8 @@ import { useAuth } from '../auth/AuthContext';
 
 /* ── 더미 데이터 ─────────────────────────────── */
 const NOTICES = [
-  { id: 1, tag: '공지', title: '🆕 2026년 하반기 전사 워크숍 일정 안내', date: '2026-06-08', important: true },
-  { id: 2, tag: '인사', title: '🆕 7월 정기 인사발령 공고', date: '2026-06-05', important: true },
+  { id: 1, tag: '공지', title: '2026년 하반기 전사 워크숍 일정 안내', date: '2026-06-08', important: true },
+  { id: 2, tag: '인사', title: '7월 정기 인사발령 공고', date: '2026-06-05', important: true },
   { id: 3, tag: '총무', title: '사무용품 신청 마감 안내 (6월 19일)', date: '2026-06-03', important: false },
   { id: 4, tag: '경영', title: '2026 상반기 경영 실적 보고', date: '2026-05-29', important: false },
   { id: 5, tag: '복지', title: '임직원 건강검진 일정 공지 (7월)', date: '2026-05-26', important: false },
@@ -260,6 +260,7 @@ const EmployeePage = () => {
                         </span>
                       </td>
                       <td style={{ ...s.td, color: 'white', fontWeight: n.important ? 600 : 400, cursor: 'pointer' }}>
+                        {n.important && <span style={s.newBadge}>NEW</span>}
                         {n.title}
                       </td>
                       <td style={s.td}>{n.date}</td>
