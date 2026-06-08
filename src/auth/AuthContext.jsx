@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 // ─────────────────────────────────────────────
 // 데모 계정 목록 (하드코딩)
@@ -19,22 +19,25 @@ const SESSION_KEY = 'emp_portal_session';
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  // 세션 복원 (새로고침 시 로그인 유지)
-  useEffect(() => {
+  // ─── 지연 초기화: 첫 렌더 시점에 sessionStorage를 동기적으로 읽음 ───
+  // useEffect 방식은 렌더 후 실행되므로 ProtectedRoute가 먼저
+  // isAuthenticated=false로 판단해 Login으로 튕기는 문제가 발생함.
+  const [user, setUser] = useState(() => {
     try {
       const saved = sessionStorage.getItem(SESSION_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setUser(parsed);
-        setIsAuthenticated(true);
-      }
+      return saved ? JSON.parse(saved) : null;
     } catch {
-      sessionStorage.removeItem(SESSION_KEY);
+      return null;
     }
-  }, []);
+  });
+
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    try {
+      return sessionStorage.getItem(SESSION_KEY) !== null;
+    } catch {
+      return false;
+    }
+  });
 
   const login = (inputId, inputPassword) => {
     const found = DEMO_ACCOUNTS.find(
