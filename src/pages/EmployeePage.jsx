@@ -260,7 +260,6 @@ const EmployeePage = () => {
                         </span>
                       </td>
                       <td style={{ ...s.td, color: 'white', fontWeight: n.important ? 600 : 400, cursor: 'pointer' }}>
-                        {n.important && <span style={s.newBadge}>NEW</span>}
                         {n.title}
                       </td>
                       <td style={s.td}>{n.date}</td>
