@@ -19,6 +19,25 @@ const Contact = () => {
       company: data.company
     });
 
+    // 고객 문의 데이터를 LocalStorage에 저장하여 임직원 포털에서 확인할 수 있도록 함
+    try {
+      const existing = JSON.parse(localStorage.getItem('customer_inquiries') || '[]');
+      const newInquiry = {
+        id: Date.now(),
+        type: '고객문의',
+        title: `[${data.inquiryType}] ${data.company} - ${data.name}`,
+        requester: data.name,
+        phone: data.phone,
+        email: data.email,
+        message: data.message,
+        date: new Date().toISOString().split('T')[0],
+        status: '대기'
+      };
+      localStorage.setItem('customer_inquiries', JSON.stringify([newInquiry, ...existing]));
+    } catch(e) {
+      console.error(e);
+    }
+
     setIsSuccess(true);
     reset();
     

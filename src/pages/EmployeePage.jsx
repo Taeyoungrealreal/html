@@ -22,70 +22,7 @@ const QUICK_LINKS = [
   { icon: '🏥', label: '복지몰', desc: '복지 포인트 사용', color: '#8B5CF6' },
 ];
 
-const ORG = {
-  name: '대표이사', person: '김대표', color: '#0EA5E9',
-  children: [
-    {
-      name: '영업팀', person: '이팀장', color: '#6366F1',
-      children: [
-        { name: '영업 1파트', person: '최사원', color: '#818CF8' },
-        { name: '영업 2파트', person: '정사원', color: '#818CF8' },
-      ],
-    },
-    {
-      name: '기술지원팀', person: '박팀장', color: '#10B981',
-      children: [
-        { name: '기술 1파트', person: '박사원', color: '#34D399' },
-        { name: '기술 2파트', person: '강사원', color: '#34D399' },
-      ],
-    },
-    {
-      name: '경영지원팀', person: '한팀장', color: '#F59E0B',
-      children: [
-        { name: '인사파트', person: '오사원', color: '#FCD34D' },
-        { name: '총무파트', person: '윤사원', color: '#FCD34D' },
-      ],
-    },
-  ],
-};
 
-/* ── 조직도 카드 컴포넌트 ── */
-const OrgCard = ({ node, depth = 0 }) => (
-  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0' }}>
-    <div style={{
-      background: depth === 0 ? `linear-gradient(135deg, ${node.color}, #1e40af)` : 'rgba(255,255,255,0.07)',
-      border: `1.5px solid ${node.color}44`,
-      borderRadius: '12px', padding: depth === 0 ? '14px 22px' : '10px 16px',
-      textAlign: 'center', minWidth: depth === 0 ? '140px' : '110px',
-      boxShadow: depth === 0 ? `0 4px 20px ${node.color}40` : 'none',
-    }}>
-      <div style={{ fontSize: depth === 0 ? '13px' : '12px', fontWeight: 700, color: 'white' }}>{node.name}</div>
-      <div style={{ fontSize: '11px', color: depth === 0 ? 'rgba(255,255,255,0.8)' : node.color, marginTop: '3px' }}>{node.person}</div>
-    </div>
-
-    {node.children && (
-      <>
-        <div style={{ width: '2px', height: '20px', background: 'rgba(255,255,255,0.15)' }} />
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', position: 'relative' }}>
-          {/* 수평 연결선 */}
-          {node.children.length > 1 && (
-            <div style={{
-              position: 'absolute', top: 0, left: '55px',
-              right: '55px', height: '2px',
-              background: 'rgba(255,255,255,0.15)',
-            }} />
-          )}
-          {node.children.map((child, i) => (
-            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ width: '2px', height: '20px', background: 'rgba(255,255,255,0.15)' }} />
-              <OrgCard node={child} depth={depth + 1} />
-            </div>
-          ))}
-        </div>
-      </>
-    )}
-  </div>
-);
 
 /* ── 메인 포털 페이지 ── */
 const EmployeePage = () => {
@@ -136,7 +73,6 @@ const EmployeePage = () => {
             {[
               { key: 'home', icon: '🏠', label: '홈' },
               { key: 'notice', icon: '📣', label: '공지사항' },
-              { key: 'org', icon: '🏢', label: '조직도' },
               { key: 'links', icon: '🔗', label: '빠른 링크' },
             ].map((item) => (
               <button key={item.key} onClick={() => setActiveTab(item.key)}
@@ -173,7 +109,6 @@ const EmployeePage = () => {
             <h1 style={s.topbarTitle}>
               {activeTab === 'home' && '대시보드'}
               {activeTab === 'notice' && '공지사항'}
-              {activeTab === 'org' && '조직도'}
               {activeTab === 'links' && '빠른 링크'}
               {activeTab === 'approval' && '전자결재'}
               {activeTab === 'attendance' && '근태관리'}
@@ -285,19 +220,7 @@ const EmployeePage = () => {
           </div>
         )}
 
-        {/* ── 조직도 탭 ── */}
-        {activeTab === 'org' && (
-          <div style={s.content}>
-            <div style={{ ...s.panel, overflowX: 'auto' }}>
-              <div style={s.panelHeader}>
-                <span style={s.panelTitle}>🏢 조직도</span>
-              </div>
-              <div style={{ padding: '32px 16px', display: 'flex', justifyContent: 'center' }}>
-                <OrgCard node={ORG} />
-              </div>
-            </div>
-          </div>
-        )}
+
 
         {/* ── 빠른 링크 탭 ── */}
         {activeTab === 'links' && (

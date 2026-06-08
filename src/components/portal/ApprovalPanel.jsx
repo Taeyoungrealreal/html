@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const APPROVAL_TABS = ['상신함', '결재 대기', '완료', '반려'];
+const APPROVAL_TABS = ['고객 문의', '상신함', '결재 대기', '완료', '반려'];
 
 const APPROVALS = {
   '상신함': [
@@ -25,21 +25,41 @@ const STATUS_STYLE = {
   '대기': { bg: 'rgba(234,179,8,0.15)', color: '#FCD34D', dot: '🟡', label: '대기' },
   '승인': { bg: 'rgba(16,185,129,0.15)', color: '#34D399', dot: '🟢', label: '승인' },
   '반려': { bg: 'rgba(239,68,68,0.15)', color: '#FCA5A5', dot: '🔴', label: '반려' },
+  '완료': { bg: 'rgba(16,185,129,0.15)', color: '#34D399', dot: '✅', label: '완료' },
 };
 
 const APPROVAL_LINE = ['담당자', '팀장', '임원'];
 
 export default function ApprovalPanel() {
-  const [tab, setTab] = useState('결재 대기');
+  const [tab, setTab] = useState('고객 문의');
   const [showDraft, setShowDraft] = useState(false);
   const [toast, setToast] = useState('');
+  const [customerInquiries, setCustomerInquiries] = useState([]);
+
+  useEffect(() => {
+    if (tab === '고객 문의') {
+      try {
+        const stored = JSON.parse(localStorage.getItem('customer_inquiries') || '[]');
+        setCustomerInquiries(stored);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, [tab]);
 
   const showToast = (msg) => {
     setToast(msg);
     setTimeout(() => setToast(''), 2500);
   };
 
-  const items = APPROVALS[tab] || [];
+  const handleCheckInquiry = (id) => {
+    const updated = customerInquiries.map(item => item.id === id ? { ...item, status: '완료' } : item);
+    setCustomerInquiries(updated);
+    localStorage.setItem('customer_inquiries', JSON.stringify(updated));
+    showToast('✅ 확인 처리되었습니다.');
+  };
+
+  const items = tab === '고객 문의' ? customerInquiries : (APPROVALS[tab] || []);
 
   return (
     <div style={s.wrap}>
@@ -105,6 +125,9 @@ export default function ApprovalPanel() {
           <button key={t} style={{ ...s.tabBtn, ...(tab === t ? s.tabActive : {}) }} onClick={() => setTab(t)}>
             {t}
             {t === '결재 대기' && <span style={s.tabBadge}>{APPROVALS['결재 대기'].length}</span>}
+            {t === '고객 문의' && customerInquiries.filter(i => i.status === '대기').length > 0 && (
+              <span style={s.tabBadge}>{customerInquiries.filter(i => i.status === '대기').length}</span>
+            )}
           </button>
         ))}
       </div>
@@ -114,9 +137,10 @@ export default function ApprovalPanel() {
         {items.length === 0 ? (
           <div style={s.empty}>해당 문서가 없습니다.</div>
         ) : items.map((item) => {
-          const st = STATUS_STYLE[item.status];
+          const st = STATUS_STYLE[item.status] || STATUS_STYLE['대기'];
           return (
-            <div key={item.id} style={s.card}>
+            <React.Fragment key={item.id}>
+            <div style={{ ...s.card, borderRadius: tab === '고객 문의' && item.message ? '12px 12px 0 0' : '12px' }}>
               <div style={s.cardLeft}>
                 <span style={s.cardType}>{item.type}</span>
                 <span style={s.cardTitle}>{item.title}</span>
@@ -133,8 +157,22 @@ export default function ApprovalPanel() {
                     <button style={s.rejectBtn} onClick={() => showToast('🔴 반려 처리되었습니다.')}>반려</button>
                   </div>
                 )}
+                {tab === '고객 문의' && item.status === '대기' && (
+                  <div style={s.actionBtns}>
+                    <button style={s.approveBtn} onClick={() => handleCheckInquiry(item.id)}>확인하기</button>
+                  </div>
+                )}
               </div>
             </div>
+            {tab === '고객 문의' && item.message && (
+              <div style={{ ...s.card, marginTop: '-12px', paddingTop: '0', borderTop: 'none', borderRadius: '0 0 12px 12px', background: 'rgba(255,255,255,0.02)' }}>
+                <div style={{ fontSize: '12px', color: 'rgba(255,255,255,0.6)', padding: '12px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px', width: '100%', wordBreak: 'keep-all' }}>
+                  <span style={{ color: '#38BDF8', fontWeight: 600, marginRight: '8px' }}>연락처: {item.phone} / {item.email}</span><br/><br/>
+                  {item.message}
+                </div>
+              </div>
+            )}
+            </React.Fragment>
           );
         })}
       </div>
