@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
+import ApprovalPanel from '../components/portal/ApprovalPanel';
+import AttendancePanel from '../components/portal/AttendancePanel';
+import DocumentPanel from '../components/portal/DocumentPanel';
 
 /* ── 더미 데이터 ─────────────────────────────── */
 const NOTICES = [
@@ -128,22 +131,29 @@ const EmployeePage = () => {
 
           {/* 내비게이션 */}
           <nav style={s.nav}>
+            {/* 메인 */}
+            <div style={s.navGroup}>메인</div>
             {[
               { key: 'home', icon: '🏠', label: '홈' },
-              { key: 'notice', icon: '📋', label: '공지사항' },
+              { key: 'notice', icon: '📣', label: '공지사항' },
               { key: 'org', icon: '🏢', label: '조직도' },
               { key: 'links', icon: '🔗', label: '빠른 링크' },
             ].map((item) => (
-              <button
-                key={item.key}
-                onClick={() => setActiveTab(item.key)}
-                style={{
-                  ...s.navBtn,
-                  ...(activeTab === item.key ? s.navBtnActive : {}),
-                }}
-              >
-                <span>{item.icon}</span>
-                {item.label}
+              <button key={item.key} onClick={() => setActiveTab(item.key)}
+                style={{ ...s.navBtn, ...(activeTab === item.key ? s.navBtnActive : {}) }}>
+                <span>{item.icon}</span>{item.label}
+              </button>
+            ))}
+            {/* 업무 */}
+            <div style={{ ...s.navGroup, marginTop: '12px' }}>업무</div>
+            {[
+              { key: 'approval', icon: '📋', label: '전자결재' },
+              { key: 'attendance', icon: '🕐', label: '근태관리' },
+              { key: 'documents', icon: '📁', label: '자료실' },
+            ].map((item) => (
+              <button key={item.key} onClick={() => setActiveTab(item.key)}
+                style={{ ...s.navBtn, ...(activeTab === item.key ? s.navBtnActive : {}) }}>
+                <span>{item.icon}</span>{item.label}
               </button>
             ))}
           </nav>
@@ -165,6 +175,9 @@ const EmployeePage = () => {
               {activeTab === 'notice' && '공지사항'}
               {activeTab === 'org' && '조직도'}
               {activeTab === 'links' && '빠른 링크'}
+              {activeTab === 'approval' && '전자결재'}
+              {activeTab === 'attendance' && '근태관리'}
+              {activeTab === 'documents' && '자료실'}
             </h1>
             <p style={s.topbarDate}>{dateStr}</p>
           </div>
@@ -294,17 +307,39 @@ const EmployeePage = () => {
                 <span style={s.panelTitle}>🔗 빠른 링크</span>
               </div>
               <div style={s.quickGrid}>
-                {QUICK_LINKS.map((l) => (
-                  <div key={l.label} style={{ ...s.quickCard, borderColor: l.color + '44' }}>
-                    <div style={{ ...s.quickIconBig, background: l.color + '22', color: l.color }}>{l.icon}</div>
-                    <div style={s.quickLabel}>{l.label}</div>
-                    <div style={s.quickDesc}>{l.desc}</div>
-                    <button style={{ ...s.quickBtn, background: l.color + '22', color: l.color }}>바로가기 →</button>
-                  </div>
-                ))}
+                {QUICK_LINKS.map((l) => {
+                  const TAB_MAP = { '전자결재': 'approval', '근태관리': 'attendance', '자료실': 'documents' };
+                  const targetTab = TAB_MAP[l.label];
+                  return (
+                    <div key={l.label} style={{ ...s.quickCard, borderColor: l.color + '44' }}>
+                      <div style={{ ...s.quickIconBig, background: l.color + '22', color: l.color }}>{l.icon}</div>
+                      <div style={s.quickLabel}>{l.label}</div>
+                      <div style={s.quickDesc}>{l.desc}</div>
+                      <button
+                        style={{ ...s.quickBtn, background: l.color + '22', color: l.color }}
+                        onClick={() => targetTab ? setActiveTab(targetTab) : null}
+                      >바로가기 →</button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
+        )}
+
+        {/* ── 전자결재 탭 ── */}
+        {activeTab === 'approval' && (
+          <div style={s.content}><ApprovalPanel /></div>
+        )}
+
+        {/* ── 근태관리 탭 ── */}
+        {activeTab === 'attendance' && (
+          <div style={s.content}><AttendancePanel /></div>
+        )}
+
+        {/* ── 자료실 탭 ── */}
+        {activeTab === 'documents' && (
+          <div style={s.content}><DocumentPanel /></div>
         )}
       </main>
 
@@ -380,6 +415,7 @@ const s = {
   quickLabel: { fontSize:'15px',fontWeight:600,color:'white' },
   quickDesc: { fontSize:'12px',color:'rgba(255,255,255,0.4)' },
   quickBtn: { padding:'7px 20px',borderRadius:'8px',border:'none',fontSize:'12px',fontWeight:600,cursor:'pointer',marginTop:'4px' },
+  navGroup: { fontSize:'10px',color:'rgba(255,255,255,0.25)',fontWeight:700,letterSpacing:'1px',padding:'4px 14px',textTransform:'uppercase' },
 };
 
 export default EmployeePage;
