@@ -18,6 +18,8 @@ export default defineConfig({
         facility: resolve(__dirname, 'Facility.html'),
         location: resolve(__dirname, 'Location.html'),
         contact: resolve(__dirname, 'Contact.html'),
+        login: resolve(__dirname, 'Login.html'),
+        employee: resolve(__dirname, 'Employee.html'),
       },
     },
   },

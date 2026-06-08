@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 
+// Auth
+import { AuthProvider } from './auth/AuthContext';
+import ProtectedRoute from './auth/ProtectedRoute';
+
 // Layout & Utilities
 import Layout from './layouts/Layout';
 import Loading from './components/ui/Loading';
@@ -13,6 +17,8 @@ import FacilityPage from './pages/FacilityPage';
 import LocationPage from './pages/LocationPage';
 import ContactPage from './pages/ContactPage';
 import NotFoundPage from './pages/NotFoundPage';
+import LoginPage from './pages/LoginPage';
+import EmployeePage from './pages/EmployeePage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -48,8 +54,17 @@ function App() {
         return <LocationPage />;
       case 'Contact.html':
         return <ContactPage />;
+      case 'Login.html':
+        return <LoginPage />;
+      case 'Employee.html':
+        return (
+          <ProtectedRoute>
+            <EmployeePage />
+          </ProtectedRoute>
+        );
       default:
-        // In dev mode with Vite, it might be /about or /history without .html
+        if (path.includes('login')) return <LoginPage />;
+        if (path.includes('employee')) return <ProtectedRoute><EmployeePage /></ProtectedRoute>;
         if (path.includes('about')) return <AboutPage />;
         if (path.includes('history')) return <HistoryPage />;
         if (path.includes('facility')) return <FacilityPage />;
@@ -59,19 +74,27 @@ function App() {
     }
   };
 
+  const isEmployeePage = filename === 'Employee.html' || path.includes('employee');
+  const isLoginPage = filename === 'Login.html' || path.includes('login');
+
   return (
     <HelmetProvider>
-      <div className="font-sans antialiased text-slate-800 bg-slate-50 min-h-screen">
-        {loading ? <Loading /> : null}
-        
+      <AuthProvider>
+        <div className="font-sans antialiased text-slate-800 bg-slate-50 min-h-screen">
+          {loading ? <Loading /> : null}
 
-
-        <div className="flex flex-col min-h-screen">
-          <Layout>
-            {getPageComponent()}
-          </Layout>
+          {/* 임직원 페이지는 Layout(헤더/푸터) 없이 단독 렌더 */}
+          {isEmployeePage || isLoginPage ? (
+            getPageComponent()
+          ) : (
+            <div className="flex flex-col min-h-screen">
+              <Layout>
+                {getPageComponent()}
+              </Layout>
+            </div>
+          )}
         </div>
-      </div>
+      </AuthProvider>
     </HelmetProvider>
   );
 }
